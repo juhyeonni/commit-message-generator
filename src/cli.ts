@@ -4,7 +4,7 @@ import run from './run';
 
 function cli() {
   const program = new Command()
-    .version('1.0.0')
+    .version('1.0.1')
     .usage('[options] <request message>')
     .description(
       'Generate commit message from commit rule\n' +
