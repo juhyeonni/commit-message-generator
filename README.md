@@ -25,19 +25,19 @@ npm install -g commit-message-generator
 1. `-k` 옵션 또는 `--apikey` 옵션을 사용하여 `openai api key`를 등록한다.
 
 ```bash
-commit-message-generator -k <apikey>
+cmg -k <apikey>
 ```
 
 2. 인자값으로 커밋하고 싶은 내용을 작성한다.
 
 ```bash
-commit-message-generator <reqeust message>
+cmg <reqeust message>
 ```
 
 3. 내용을 확인한다.
 
 ```bash
-commit-message-generator "프로젝트 초기화 작업"
+cmg "프로젝트 초기화 작업"
 
 # output
 🎉 init: Initialize the project
