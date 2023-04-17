@@ -6,6 +6,8 @@ OpenAI사의 `GPT3.5 turbo`을 활용한 commit message를 대신 작성해주�
 
 ## Installation
 
+[[npmjs] commit-message-generator](https://www.npmjs.com/package/commit-message-generator)
+
 `npm` 또는 `yarn`을 사용하여 패키지를 설치할 수 있다.
 
 - yarn
