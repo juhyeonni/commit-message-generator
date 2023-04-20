@@ -4,10 +4,12 @@ import run from './run';
 
 function cli() {
   const program = new Command()
-    .version('1.0.0')
+    .name('cmg')
+    .version('1.0.2')
     .usage('[options] <request message>')
     .description(
-      'Generate commit message from commit rule\n' +
+      '| Commit Message Generator |\n' +
+        'Generate commit message from commit rule\n' +
         'if you want to configure commit rule, please edit `commit.rule.json` file',
     )
     .option('-k, --apikey <apikey>', 'set API key for OpenAI')
