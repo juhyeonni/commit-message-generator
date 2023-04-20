@@ -4,7 +4,8 @@ import run from './run';
 
 function cli() {
   const program = new Command()
-    .version('1.0.1')
+    .name('cmg')
+    .version('1.0.2')
     .usage('[options] <request message>')
     .description(
       '| Commit Message Generator |\n' +
