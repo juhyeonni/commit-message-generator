@@ -7,7 +7,8 @@ function cli() {
     .version('1.0.1')
     .usage('[options] <request message>')
     .description(
-      'Generate commit message from commit rule\n' +
+      '| Commit Message Generator |\n' +
+        'Generate commit message from commit rule\n' +
         'if you want to configure commit rule, please edit `commit.rule.json` file',
     )
     .option('-k, --apikey <apikey>', 'set API key for OpenAI')
