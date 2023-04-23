@@ -34,8 +34,8 @@ class CommitGenerator {
     return ruleString;
   }
 
-  async genCommitMsg(reqMessage: string): Promise<string> {
-    const prompt = `${this.formattedRule} request: ${reqMessage}`;
+  async genCommitMsg(request: string): Promise<string> {
+    const prompt = `${this.formattedRule}, request: ${request}`;
 
     const completion = await this.openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
