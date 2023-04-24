@@ -6,7 +6,7 @@ import { AdditionalOptions } from './interfaces/AdditionalOptions.interface';
 function cli() {
   const program = new Command()
     .name('cmg')
-    .version('1.0.2')
+    .version('1.1.0')
     .usage('[options] <request message>')
     .description(
       '| Commit Message Generator |\n' +
