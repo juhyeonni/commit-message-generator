@@ -2,11 +2,12 @@ import { Command } from 'commander';
 import { getApiKey, setApiKey } from './utils/apiKey';
 import run from './run';
 import { AdditionalOptions } from './interfaces/AdditionalOptions.interface';
+import packageJson from '../package.json';
 
 function cli() {
   const program = new Command()
     .name('cmg')
-    .version('1.1.0')
+    .version(packageJson.version)
     .usage('[options] <request message>')
     .description(
       '| Commit Message Generator |\n' +
