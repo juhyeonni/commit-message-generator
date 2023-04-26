@@ -1,0 +1,4 @@
+version=$(npm version patch --no-git-tag-version)
+git add package.json
+git commit -m "🔖 release: Update to $version"
+
