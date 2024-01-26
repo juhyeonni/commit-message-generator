@@ -1,45 +1,19 @@
 import CommitGenerator from './commit-generator';
-import { CommitRule, Configuration } from './interfaces';
-import { AdditionalOptions } from './interfaces/AdditionalOptions.interface';
-import { getCommitRuleJson } from './utils/commitRule';
-import { createOpenAIApi } from './utils/openAIApi';
-import { getDiff } from './utils/gitDiff';
+import OpenAI from 'openai';
+import CLI from './cli';
+import { getAIModel, getApiKey, getCommitRule } from './utils/fileStream';
+import RequestFormatter from './formatter';
 
-async function run(
-  reqMsg: string,
-  apiKey: string,
-  addtionalOptions: AdditionalOptions,
-): Promise<void> {
-  const { diffPath } = addtionalOptions;
+function run() {
+  const openai = new OpenAI({
+    apiKey: getApiKey(),
+  });
+  const model = getAIModel();
+  const formatter = new RequestFormatter(4096, getCommitRule());
 
-  const rule: CommitRule = getCommitRuleJson();
-  const openai = createOpenAIApi(apiKey);
+  const commitGenerator = new CommitGenerator(openai, model, formatter);
 
-  const configuration: Configuration = {
-    rule,
-    openai,
-  };
-  const commitGenerator = new CommitGenerator(configuration);
-
-  if (diffPath) return runWithDiff(commitGenerator, diffPath);
-  if (reqMsg) return runCommon(commitGenerator, reqMsg);
-}
-
-async function runCommon(commitGenerator: CommitGenerator, reqMsg: string) {
-  const msg = await commitGenerator.genCommitMsg(reqMsg);
-
-  console.log(msg);
-}
-
-async function runWithDiff(commitGenerator: CommitGenerator, diffPath: string) {
-  const diff = await getDiff(diffPath);
-  const reqMsg =
-    "Below is the result of a git diff. Check out the diffrences and figure out what's changed." +
-    diff;
-
-  const msg = await commitGenerator.genCommitMsg(reqMsg);
-
-  console.log(msg);
+  new CLI(commitGenerator);
 }
 
 export default run;
