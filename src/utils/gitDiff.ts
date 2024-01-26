@@ -2,7 +2,7 @@ import { exec } from 'child_process';
 
 function gitDiff(filePath: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    exec(`git diff ${filePath}`, (err, stdout) => {
+    exec(`git diff HEAD ${filePath}`, (err, stdout) => {
       if (err) {
         reject(err);
       } else {
