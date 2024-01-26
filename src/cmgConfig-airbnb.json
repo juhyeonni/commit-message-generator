@@ -1,57 +1,41 @@
 {
-  "commitFormat": "<type>(<scope>): <subject>\n<body>\n<footer>",
-  "typeOfCommit": [
+  "format": "<type>(<scope>): <subject>\n<body>\n<footer>",
+  "commitTypes": [
     {
-      "type": "👷 build",
+      "type": "build",
       "description": "Changes to the build system or external dependencies"
     },
     {
-      "type": "💚 ci",
+      "type": "ci",
       "description": "Changes related to CI configuration files and scripts"
     },
     {
-      "type": "📝 docs",
+      "type": "docs",
       "description": "Documentation related changes"
     },
     {
-      "type": "✨ feat",
+      "type": "feat",
       "description": "Add new features"
     },
     {
-      "type": "🐛 fix",
+      "type": "fix",
       "description": "Bug fixes"
     },
     {
-      "type": "📈 perf",
+      "type": "perf",
       "description": "Changes to improve performance"
     },
     {
-      "type": "🎨 refactor",
+      "type": "refactor",
       "description": "Improve your code to make it more readable and maintainable"
     },
     {
-      "type": "💄 style",
+      "type": "style",
       "description": "Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)"
     },
     {
-      "type": "✅ test",
+      "type": "test",
       "description": "Add missing tests or correcting existing tests"
-    },
-    {
-      "type": "🎉 init",
-      "description": "Initialize the project"
-    },
-    {
-      "type": "🔖 release",
-      "description": "Release a new version"
-    },
-    {
-      "type": "➕ plus",
-      "description": "add dependency"
-    },
-    {
-      "type": "➖ minus",
-      "description": "remove dependency"
     }
   ],
   "localRules": [
@@ -59,6 +43,8 @@
     "<subject> is a short summary of the commit. Write it in 50 characters or less and don't include periods",
     "<body> is a longer description of the commit. Optional (if not given, do not add)",
     "<footer> is a place to put additional information about the commit. Optional (if not given, do not add)",
-    "if the request doesn't make sense, return 'request error'"
-  ]
+    "If the request doesn't make sense, return 'request error'",
+    "If the 'Type of Commit' has an emoji, include that emoji in the <type>."
+  ],
+  "gpt_model": "gpt-3.5-turbo"
 }

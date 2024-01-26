@@ -1,55 +1,48 @@
-import { OpenAIApi } from 'openai';
-import { Configuration, CommitRule } from './interfaces';
+import OpenAI from 'openai';
+import { getDiff } from './utils/gitDiff';
+import { Formatter } from './interfaces/formatter.interface';
 
 class CommitGenerator {
-  private formattedRule: string;
-  private openai: OpenAIApi;
-
-  constructor(configuration: Configuration) {
-    const { rule, openai } = configuration;
-
-    this.openai = openai;
-    this.formattedRule = this.formatRule(rule);
+  constructor(
+    private openai: OpenAI,
+    private model: OpenAI.Chat.ChatCompletionCreateParams['model'],
+    private formatter: Formatter,
+  ) {
+    this.generate = this.generate.bind(this);
+    this.diffGenerate = this.diffGenerate.bind(this);
   }
 
-  formatRule(rule: CommitRule): string {
-    const { commitFormat, typeOfCommit, localRules }: CommitRule = rule;
+  async communicate(requests: string[]) {
+    const responses = await Promise.all(
+      requests.map(chunk =>
+        this.openai.chat.completions.create({
+          messages: [{ role: 'user', content: chunk }],
+          model: this.model,
+          temperature: 0.3,
+        }),
+      ),
+    );
 
-    const typeOfCommitString = typeOfCommit
-      .map(item => `- ${item.type}: ${item.description}`)
-      .join('\n');
+    const combinedResponse = responses.reduce(
+      (combined, response) =>
+        combined + response['choices'][0]['message']['content'],
+      '',
+    );
 
-    const localRulesString = localRules.map(localRule => `- ${localRule}`).join('\n');
-
-    const ruleString =
-      'Write a commit message following the format and rules below.\n' +
-      '## Format\n' +
-      `${commitFormat}\n` +
-      '## Rules\n' +
-      '### Type of Commit\n' +
-      `${typeOfCommitString}\n` +
-      '### Local rules\n' +
-      `${localRulesString}\n`;
-
-    return ruleString;
+    return combinedResponse;
   }
 
-  async genCommitMsg(request: string): Promise<string> {
-    const prompt = `${this.formattedRule}, request: ${request}`;
+  async generate(inputContent: string) {
+    const requests = this.formatter.formatRequestMessage(inputContent);
+    const response = await this.communicate(requests);
+    console.log(response);
+  }
 
-    const completion = await this.openai.createChatCompletion({
-      model: 'gpt-3.5-turbo',
-      max_tokens: 100,
-      temperature: 0.3,
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-    });
-
-    return completion.data.choices[0].message?.content || 'failed to generate commit message';
+  async diffGenerate(diffPath: string) {
+    const diff = await getDiff(diffPath);
+    const requests = this.formatter.formatRequestMessage(diff);
+    const response = await this.communicate(requests);
+    console.log(response);
   }
 }
 

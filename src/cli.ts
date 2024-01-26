@@ -1,45 +1,76 @@
 import { Command } from 'commander';
-import { getApiKey, setApiKey } from './utils/apiKey';
-import run from './run';
-import { AdditionalOptions } from './interfaces/AdditionalOptions.interface';
+import prompt from 'password-prompt';
+import CommitGenerator from './commit-generator';
+import { openCmgConfigFile, setApiKey } from './utils/fileStream';
 
-function cli() {
-  const program = new Command()
-    .name('cmg')
-    .version('1.1.0')
-    .usage('[options] <request message>')
-    .description(
-      '| Commit Message Generator |\n' +
-        'Generate commit message from commit rule\n' +
-        'if you want to configure commit rule, please edit `commit.rule.json` file',
-    )
-    .option('-k, --apikey <apikey>', 'set API key for OpenAI')
-    .option('-d, --diff <filePath>', 'generate commit message from diffPath')
-    .parse(process.argv);
+class CLI extends Command {
+  constructor(private commitGenerator: CommitGenerator) {
+    super();
 
-  const reqMsg = program.args[0];
-
-  const options = program.opts();
-
-  const { apikey, diff } = options;
-  const additionalOptions: AdditionalOptions = { diffPath: diff };
-
-  // set apikey
-  if (apikey) {
-    setApiKey(apikey);
-    console.log("API key is set, you don't need to set apikey again");
-    process.exit(0);
+    this.name('cmg')
+      .version('0.0.1')
+      .description(
+        '| Commit Message Generator |\n' +
+          'Generate commit message from commit rule\n' +
+          "You can configure commit rule by 'cmg config' command",
+      )
+      .initCommand()
+      .parse(process.argv);
   }
 
-  // get apikey
-  const OPENAI_API_KEY = getApiKey();
+  initCommand() {
+    this.command('generate <inputContent>')
+      .alias('g')
+      .description('Generate commit message')
+      .action(this.commitGenerator.generate);
 
-  if (!OPENAI_API_KEY) {
-    console.error('API key must be set');
-    program.help();
-    process.exit(1);
+    this.command('diff <filePath>')
+      .alias('d')
+      .description('Detect the changes and generate a commit message.')
+      .action(this.commitGenerator.diffGenerate);
+
+    this.command('setkey')
+      .alias('s')
+      .description('Set API key for OpenAI')
+      .action(this.setApiKey);
+
+    this.command('setmodel')
+      .description('Set model for OpenAI')
+      .action(this.setAIModel);
+
+    this.command('config')
+      .description('Configure commit rule')
+      .option('-s, --set', 'Set commit rule')
+      .action(this.configureRule);
+
+    return this;
   }
-  run(reqMsg, OPENAI_API_KEY, additionalOptions);
+
+  setApiKey() {
+    prompt('API key: ').then(apiKey => {
+      console.log("API key is set, you don't need to set apikey again");
+      setApiKey(apiKey);
+    });
+  }
+
+  getAIModel() {
+    console.log('get AI model');
+  }
+
+  setAIModel() {
+    console.log('set AI model');
+  }
+
+  // TODO: 룰을 브라우징할 수 있는 기능 추가
+  configureRule(options: { set: boolean }) {
+    console.log('configure rule');
+
+    if (options.set) {
+      console.log('Rule file selection is not yet implemented!');
+    } else {
+      openCmgConfigFile('cmgConfig.json');
+    }
+  }
 }
 
-export default cli;
+export default CLI;

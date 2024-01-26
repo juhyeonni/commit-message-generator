@@ -2,7 +2,7 @@ import { exec } from 'child_process';
 
 function gitDiff(filePath: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    exec(`git diff ${filePath}`, (err, stdout) => {
+    exec(`git diff HEAD ${filePath}`, (err, stdout) => {
       if (err) {
         reject(err);
       } else {
@@ -12,7 +12,7 @@ function gitDiff(filePath: string): Promise<string> {
   });
 }
 
-async function getDiff(filePath: string) {
+export async function getDiff(filePath: string) {
   const diff = await gitDiff(filePath);
 
   if (!diff) {
@@ -23,5 +23,3 @@ async function getDiff(filePath: string) {
 
   return diff;
 }
-
-export { getDiff };
