@@ -26,8 +26,9 @@
     "prettier:check": "prettier --check .",
     "build": "tsc",
     "start": "node dist/index.js",
-    "vPatch": "sh patch",
-    "vMinor": "sh minor"
+    "vMajor": "sh major",
+    "vMinor": "sh minor",
+    "vPatch": "sh patch"
   },
   "devDependencies": {
     "@types/node": "^20.6.5",
