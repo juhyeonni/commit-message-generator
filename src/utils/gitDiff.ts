@@ -12,7 +12,7 @@ function gitDiff(filePath: string): Promise<string> {
   });
 }
 
-async function getDiff(filePath: string) {
+export async function getDiff(filePath: string) {
   const diff = await gitDiff(filePath);
 
   if (!diff) {
@@ -23,5 +23,3 @@ async function getDiff(filePath: string) {
 
   return diff;
 }
-
-export { getDiff };
