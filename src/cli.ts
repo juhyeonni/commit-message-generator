@@ -2,13 +2,14 @@ import { Command } from 'commander';
 import prompt from 'password-prompt';
 import CommitGenerator from './commit-generator';
 import { initConfig, openCmgConfigFile, setApiKey } from './utils/fileStream';
+import packageJson from '../package.json';
 
 class CLI extends Command {
   constructor(private commitGenerator: CommitGenerator) {
     super();
 
     this.name('cmg')
-      .version('0.0.1')
+      .version(packageJson.version)
       .description(
         '| Commit Message Generator |\n' +
           'Generate commit message from commit rule\n' +
