@@ -23,13 +23,6 @@ jobs:
       run: yarn install
     - name: Build
       run: yarn build
-    - name: Versioning
-      run: |
-        version=$(npm version minor --no-git-tag-version)
-        git add package.json
-        git commit -m "🔖 release: Update to $version"
-        git push origin release
-
     - name: Publish
       run: yarn publish
       env:
