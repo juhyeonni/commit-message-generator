@@ -1,4 +1,4 @@
-version=$(npm version minor)
+version=$(yarn version --minor --no-git-tag-version)
 git add package.json
 git commit -m "🔖 release: Update to $version"
 
