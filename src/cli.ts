@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import prompt from 'password-prompt';
 import CommitGenerator from './commit-generator';
 import { initConfig, openCmgConfigFile, setApiKey } from './utils/fileStream';
-import packageJson from '../package.json';
+const packageJson = require('../package.json');
 
 class CLI extends Command {
   constructor(private commitGenerator: CommitGenerator) {
