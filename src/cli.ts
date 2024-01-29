@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import prompt from 'password-prompt';
 import CommitGenerator from './commit-generator';
-import { openCmgConfigFile, setApiKey } from './utils/fileStream';
+import { initConfig, openCmgConfigFile, setApiKey } from './utils/fileStream';
 
 class CLI extends Command {
   constructor(private commitGenerator: CommitGenerator) {
@@ -43,6 +43,12 @@ class CLI extends Command {
       .option('-s, --set', 'Set commit rule')
       .action(this.configureRule);
 
+    this.command('init')
+      .description(
+        "Initialize the project commit rule config 'cmg-config.json'",
+      )
+      .action(this.initConfig);
+
     return this;
   }
 
@@ -70,6 +76,12 @@ class CLI extends Command {
     } else {
       openCmgConfigFile('cmg-config.json');
     }
+  }
+
+  initConfig() {
+    console.log('init config');
+
+    initConfig();
   }
 }
 
