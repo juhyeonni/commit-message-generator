@@ -68,7 +68,7 @@ class CLI extends Command {
     if (options.set) {
       console.log('Rule file selection is not yet implemented!');
     } else {
-      openCmgConfigFile('cmgConfig.json');
+      openCmgConfigFile('cmg-config.json');
     }
   }
 }

@@ -5,7 +5,7 @@ import { exec } from 'child_process';
 import { CmgConfig, CommitRule } from '../interfaces/cmg-config.interface';
 
 const applicationDir = path.resolve(__dirname, '..');
-const cmgConfigPath = path.resolve(applicationDir, './cmgConfig.json');
+const cmgConfigPath = path.resolve(applicationDir, './cmg-config.json');
 const apiKeyFilePath = path.resolve(applicationDir, '.apikey');
 
 /**
