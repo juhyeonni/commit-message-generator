@@ -1,0 +1,36 @@
+name: Node CI
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install dependencies
+      run: yarn install
+    - name: Build
+      run: yarn build
+    - name: Versioning
+      run: |
+        version=$(npm version minor --no-git-tag-version)
+        git add package.json
+        git commit -m "🔖 release: Update to $version"
+        git push origin release
+
+    - name: Publish
+      run: yarn publish
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
