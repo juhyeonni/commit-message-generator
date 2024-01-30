@@ -5,7 +5,7 @@ import { exec } from 'child_process';
 import { CmgConfig, CommitRule } from '../interfaces/cmg-config.interface';
 
 const applicationDir = path.resolve(__dirname, '..');
-const cmgConfigPath = path.resolve(applicationDir, './cmgConfig.json');
+const cmgConfigPath = path.resolve(applicationDir, './cmg-config.json');
 const apiKeyFilePath = path.resolve(applicationDir, '.apikey');
 
 /**
@@ -92,6 +92,84 @@ export function setAIModel(model: string) {
   const cmgConfigFile = fs.readFileSync(cmgConfigPath);
   const cmgConfig = JSON.parse(cmgConfigFile.toString()) as CmgConfig;
   cmgConfig.gpt_model = model;
+
+  fs.writeFileSync(cmgConfigPath, JSON.stringify(cmgConfig));
+}
+
+export function initConfig() {
+  const cmgConfig = {
+    format: '<type>(<scope>): <subject>\n<optional body>\n<optional footer>',
+    commitTypes: [
+      {
+        type: '✨ feat',
+        description: 'Introduces a new feature to the application',
+      },
+      {
+        type: '🐛 fix',
+        description: 'Fixes a bug in the application',
+      },
+      {
+        type: '📚 docs',
+        description: 'Updates to documentation',
+      },
+      {
+        type: '💎 style',
+        description: 'Improves the format/structure of the code',
+      },
+      {
+        type: '🔨 refactor',
+        description: 'Code change that neither fixes a bug nor adds a feature',
+      },
+      {
+        type: '🚀 perf',
+        description: 'Improves performance',
+      },
+      {
+        type: '🚨 test',
+        description: 'Adds missing tests or corrects existing ones',
+      },
+      {
+        type: '📦 build',
+        description:
+          'Changes that affect the build system or external dependencies',
+      },
+      {
+        type: '👷 ci',
+        description: 'Changes to our CI configuration files and scripts',
+      },
+      {
+        type: '🔧 chore',
+        description:
+          'Routine task or maintenance, updates to the build process or auxiliary tools/libraries',
+      },
+      {
+        type: '🎉 init',
+        description: 'Initialize the project',
+      },
+      {
+        type: '🔖 release',
+        description: 'Release a new version',
+      },
+      {
+        type: '➕ plus',
+        description: 'add dependency',
+      },
+      {
+        type: '➖ minus',
+        description: 'remove dependency',
+      },
+    ],
+    localRules: [
+      '<scope> is indicates the scope affected by the change. Optional (if not given, do not add)',
+      "<subject> is a short summary of the commit. Write it in 50 characters or less and don't include periods",
+      '<body> is a longer description of the commit. Optional (if not given, do not add)',
+      '<footer> is a place to put additional information about the commit. Optional (if not given, do not add)',
+      "if the request doesn't make sense, return 'request error'",
+      "If the 'Type of Commit' has an emoji, include that emoji in the <type>.",
+      'Please writing commit message in English',
+    ],
+    gpt_model: 'gpt-3.5-turbo',
+  };
 
   fs.writeFileSync(cmgConfigPath, JSON.stringify(cmgConfig));
 }

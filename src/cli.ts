@@ -1,14 +1,15 @@
 import { Command } from 'commander';
 import prompt from 'password-prompt';
 import CommitGenerator from './commit-generator';
-import { openCmgConfigFile, setApiKey } from './utils/fileStream';
+import { initConfig, openCmgConfigFile, setApiKey } from './utils/fileStream';
+const packageJson = require('../package.json');
 
 class CLI extends Command {
   constructor(private commitGenerator: CommitGenerator) {
     super();
 
     this.name('cmg')
-      .version('0.0.1')
+      .version(packageJson.version)
       .description(
         '| Commit Message Generator |\n' +
           'Generate commit message from commit rule\n' +
@@ -43,6 +44,12 @@ class CLI extends Command {
       .option('-s, --set', 'Set commit rule')
       .action(this.configureRule);
 
+    this.command('init')
+      .description(
+        "Initialize the project commit rule config 'cmg-config.json'",
+      )
+      .action(this.initConfig);
+
     return this;
   }
 
@@ -68,8 +75,14 @@ class CLI extends Command {
     if (options.set) {
       console.log('Rule file selection is not yet implemented!');
     } else {
-      openCmgConfigFile('cmgConfig.json');
+      openCmgConfigFile('cmg-config.json');
     }
+  }
+
+  initConfig() {
+    console.log('init config');
+
+    initConfig();
   }
 }
 

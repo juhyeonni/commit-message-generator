@@ -1,6 +1,6 @@
 {
   "name": "commit-message-generator",
-  "version": "2.0.2",
+  "version": "2.1.5",
   "license": "MIT",
   "description": "A CLI tool to generate commit messages using OpenAI API",
   "author": {
@@ -12,9 +12,9 @@
     "type": "git",
     "url": "git://github.com/d556f8/commit-message-generator.git"
   },
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "bin": {
-    "cmg": "dist/index.js"
+    "cmg": "./dist/index.js"
   },
   "files": [
     "/dist"
@@ -25,7 +25,7 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node ./dist/index.js",
     "vMajor": "sh major",
     "vMinor": "sh minor",
     "vPatch": "sh patch"
